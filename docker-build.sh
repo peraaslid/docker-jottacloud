@@ -1,14 +1,14 @@
 #!/bin/bash
 
-VERSION=0.17.148769
+VERSION=0.17.159692
 DATE=`date +%Y%m%d`
 
-docker build --no-cache --pull -t bluet/jottacloud .
-# docker scan bluet/jottacloud:latest
-docker scout quickview bluet/jottacloud:latest
-grype bluet/jottacloud:latest | grep -i -E '(High|Critical)'
+docker build --no-cache --pull -t peraas/jottacloud .
+# docker scan peraas/jottacloud:latest
+docker scout quickview peraas/jottacloud:latest
+grype peraas/jottacloud:latest | grep -i -E '(High|Critical)'
 
-docker tag bluet/jottacloud:latest bluet/jottacloud:${VERSION}
+docker tag peraas/jottacloud:latest peraas/jottacloud:${VERSION}
 # git tag moved to the last step
 #git tag "${VERSION}" -a -m "jotta-cli ${VERSION}"
 #git push --tags
@@ -22,7 +22,7 @@ docker tag bluet/jottacloud:latest bluet/jottacloud:${VERSION}
 while true; do
         read -p "Is VERSION=${VERSION}-${DATE} the current latest version? (We're going to build multi-platform images and push) [y/N]" yn
         case $yn in
-                [Yy]* ) docker buildx build --no-cache --builder cloud-bluet-test -t bluet/jottacloud:latest -t bluet/jottacloud:${VERSION}-${DATE} --platform linux/amd64,linux/arm64/v8 --pull --push .; break;;
+                [Yy]* ) docker buildx build --no-cache --builder cloud-peraas-test -t peraas/jottacloud:latest -t peraas/jottacloud:${VERSION}-${DATE} --platform linux/amd64,linux/arm64/v8 --pull --push .; break;;
                 [Nn]* ) break;;
                 * ) echo "";;
         esac
